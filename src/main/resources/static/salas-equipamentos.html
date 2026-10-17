@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>BellaPelle - Salas e Equipamentos</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; }
+        .tabs button { background: #e2e8f0; color: #334155; border: none; padding: 10px 18px; border-radius: 8px; cursor: pointer; font-weight: 600; }
+        .tabs button.ativa { background: #0284c7; color: white; }
+        .secao-tab { display: none; }
+        .secao-tab.ativa { display: block; }
+    </style>
+</head>
+<body>
+<header>
+    <h1>BellaPelle</h1>
+    <nav>
+        <a href="index.html">Pacientes</a>
+        <a href="profissionais.html">Profissionais</a>
+        <a href="salas-equipamentos.html" class="ativo">Salas &amp; Equipamentos</a>
+        <a href="procedimentos.html">Procedimentos</a>
+        <a href="pacotes.html">Pacotes</a>
+        <a href="agendamentos.html">Agendamentos</a>
+    </nav>
+</header>
+
+<main>
+    <div class="tabs">
+        <button id="tabBtnSalas" class="ativa" onclick="alternarTab('salas')">Salas</button>
+        <button id="tabBtnEquipamentos" onclick="alternarTab('equipamentos')">Equipamentos</button>
+    </div>
+
+    <!-- SEÇÃO SALAS -->
+    <section id="tabSalas" class="card secao-tab ativa">
+        <div class="toolbar">
+            <input type="text" id="buscaSala" placeholder="Buscar sala por nome">
+            <select id="filtroStatusSala">
+                <option value="">Todos os status</option>
+                <option value="Ativa" selected>Ativas</option>
+                <option value="Em manutenção">Em manutenção</option>
+                <option value="Inativa">Inativas</option>
+            </select>
+            <button class="primary" onclick="abrirNovaSala()">+ Nova Sala</button>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Descrição</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody id="tabelaSalas"></tbody>
+        </table>
+    </section>
+
+    <!-- SEÇÃO EQUIPAMENTOS -->
+    <section id="tabEquipamentos" class="card secao-tab">
+        <div class="toolbar">
+            <input type="text" id="buscaEquipamento" placeholder="Buscar por modelo, tipo ou série">
+            <select id="filtroStatusEquipamento">
+                <option value="">Todos os status</option>
+                <option value="Disponível" selected>Disponíveis</option>
+                <option value="Em manutenção">Em manutenção</option>
+                <option value="Inativo">Inativos</option>
+            </select>
+            <button class="primary" onclick="abrirNovoEquipamento()">+ Novo Equipamento</button>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nome / Modelo</th>
+                    <th>Tipo</th>
+                    <th>Nº Série</th>
+                    <th>Sala</th>
+                    <th>Próx. Manutenção</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody id="tabelaEquipamentos"></tbody>
+        </table>
+    </section>
+
+    <!-- MODAL SALA -->
+    <dialog id="modalSala">
+        <form id="formSala">
+            <h2 id="tituloModalSala">Nova Sala</h2>
+            <input type="hidden" id="salaId">
+            <div class="grid">
+                <label>Nome da Sala *<input id="salaNome" required maxlength="50"></label>
+                <label>Status *
+                    <select id="salaStatus">
+                        <option value="Ativa">Ativa</option>
+                        <option value="Em manutenção">Em manutenção</option>
+                        <option value="Inativa">Inativa</option>
+                    </select>
+                </label>
+                <label style="grid-column: 1 / -1;">Descrição
+                    <textarea id="salaDescricao" rows="3" maxlength="255"></textarea>
+                </label>
+            </div>
+            <p id="erroSala" class="erro"></p>
+            <div class="acoes">
+                <button type="button" onclick="$('modalSala').close()">Cancelar</button>
+                <button type="submit" class="primary">Salvar Sala</button>
+            </div>
+        </form>
+    </dialog>
+
+    <!-- MODAL EQUIPAMENTO -->
+    <dialog id="modalEquipamento">
+        <form id="formEquipamento">
+            <h2 id="tituloModalEquipamento">Novo Equipamento</h2>
+            <input type="hidden" id="equipamentoId">
+            <div class="grid">
+                <label>Nome / Modelo *<input id="eqNomeModelo" required maxlength="150"></label>
+                <label>Tipo *<input id="eqTipo" required maxlength="100" placeholder="Ex: Laser, Radiofrequência"></label>
+                <label>Nº de Série<input id="eqNumeroSerie" maxlength="100"></label>
+                <label>Sala Vinculada
+                    <select id="eqIdSala">
+                        <option value="">Nenhuma / Portátil</option>
+                    </select>
+                </label>
+                <label>Status *
+                    <select id="eqStatus">
+                        <option value="Disponível">Disponível</option>
+                        <option value="Em manutenção">Em manutenção</option>
+                        <option value="Inativo">Inativo</option>
+                    </select>
+                </label>
+                <label>Última Manutenção<input id="eqUltimaManutencao" type="date"></label>
+                <label>Próxima Manutenção<input id="eqProximaManutencao" type="date"></label>
+            </div>
+            <p id="erroEquipamento" class="erro"></p>
+            <div class="acoes">
+                <button type="button" onclick="$('modalEquipamento').close()">Cancelar</button>
+                <button type="submit" class="primary">Salvar Equipamento</button>
+            </div>
+        </form>
+    </dialog>
+</main>
+
+<script src="js/salas-equipamentos.js"></script>
+</body>
+</html>

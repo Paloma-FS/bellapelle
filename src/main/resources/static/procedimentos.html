@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>BellaPelle - Procedimentos</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header>
+    <h1>BellaPelle</h1>
+  <nav>
+        <a href="index.html">Pacientes</a>
+        <a href="profissionais.html">Profissionais</a>
+        <a href="salas-equipamentos.html">Salas &amp; Equipamentos</a>
+        <a href="procedimentos.html" class="ativo">Procedimentos</a>
+        <a href="pacotes.html">Pacotes</a>
+        <a href="agendamentos.html">Agendamentos</a>
+    </nav>
+</header>
+
+<main>
+    <section class="card">
+        <div class="toolbar">
+            <input type="text" id="busca" placeholder="Buscar por nome ou categoria">
+            <select id="filtroStatus">
+                <option value="">Todos</option>
+                <option value="Ativo" selected>Ativos</option>
+                <option value="Inativo">Inativos</option>
+            </select>
+            <button id="btnNovo" class="primary">+ Novo procedimento</button>
+        </div>
+        <table>
+            <thead>
+            <tr><th>Nome</th><th>Categoria</th><th>Valor</th><th>Duração</th><th>Equipamento</th><th>Status</th><th>Ações</th></tr>
+            </thead>
+            <tbody id="tabela"></tbody>
+        </table>
+    </section>
+
+    <dialog id="modal">
+        <form id="form">
+            <h2 id="tituloForm">Novo procedimento</h2>
+            <input type="hidden" id="id">
+            <div class="grid">
+                <label>Nome *<input id="nome" required maxlength="150"></label>
+                <label>Categoria<input id="categoria" maxlength="100"></label>
+                <label>Valor (R$) *<input id="valor" type="number" step="0.01" min="0" required></label>
+                <label>Duração (minutos) *<input id="duracaoMinutos" type="number" min="1" required></label>
+                <label>Comissão (%)<input id="percentualComissao" type="number" step="0.01" min="0" max="100"></label>
+                <label>Requer equipamento?
+                    <select id="requerEquipamento"><option value="false">Não</option><option value="true">Sim</option></select>
+                </label>
+                <label>Tipo de equipamento requerido<input id="tipoEquipamentoRequerido" maxlength="100" placeholder="Igual ao tipo cadastrado no equipamento"></label>
+                <label>É injetável?
+                    <select id="injetavel"><option value="false">Não</option><option value="true">Sim</option></select>
+                </label>
+                <label style="grid-column: 1 / -1;">Descrição<textarea id="descricao" rows="2"></textarea></label>
+                <label style="grid-column: 1 / -1;">Contraindicações<textarea id="contraindicacoes" rows="2"></textarea></label>
+            </div>
+            <p id="erro" class="erro"></p>
+            <div class="acoes">
+                <button type="button" id="btnCancelar">Cancelar</button>
+                <button type="submit" class="primary">Salvar</button>
+            </div>
+        </form>
+    </dialog>
+</main>
+<script src="js/procedimentos.js"></script>
+</body>
+</html>

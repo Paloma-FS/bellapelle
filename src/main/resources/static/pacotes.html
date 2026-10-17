@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>BellaPelle - Pacotes</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+    #listaProcs { max-height: 260px; overflow: auto; border: 1px solid #cbd5e1; border-radius: 8px; padding: 4px 8px; }
+    #listaProcs .proc-linha {
+        display: grid;
+        grid-template-columns: 24px 1fr auto;
+        align-items: center;
+        gap: 12px;
+        padding: 8px 4px;
+        border-bottom: 1px solid #e2e8f0;
+    }
+    #listaProcs .proc-linha:last-child { border-bottom: none; }
+    #listaProcs input.chkProc { width: 18px; height: 18px; margin: 0; padding: 0; }
+    #listaProcs .proc-nome { display: flex; flex-direction: column; text-align: left; }
+    #listaProcs .proc-nome small { color: #64748b; }
+    #listaProcs .proc-qtd { display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+    #listaProcs input.qtdProc { width: 70px; margin: 0; }
+    #listaProcs input.qtdProc:disabled { background: #f1f5f9; opacity: .6; }
+</style>
+</head>
+<body>
+<header>
+    <h1>BellaPelle</h1>
+  <nav>
+        <a href="index.html">Pacientes</a>
+        <a href="profissionais.html">Profissionais</a>
+        <a href="salas-equipamentos.html">Salas &amp; Equipamentos</a>
+        <a href="procedimentos.html">Procedimentos</a>
+        <a href="pacotes.html" class="ativo">Pacotes</a>
+        <a href="agendamentos.html">Agendamentos</a>
+    </nav>
+</header>
+
+<main>
+    <section class="card">
+        <div class="toolbar">
+            <input type="text" id="busca" placeholder="Buscar por nome">
+            <select id="filtroStatus">
+                <option value="">Todos</option>
+                <option value="Ativo" selected>Ativos</option>
+                <option value="Inativo">Inativos</option>
+            </select>
+            <button id="btnNovo" class="primary">+ Novo pacote</button>
+        </div>
+        <table>
+            <thead>
+            <tr><th>Nome</th><th>Descrição</th><th>Procedimentos incluídos (sessões)</th><th>Valor total</th><th>Validade</th><th>Status</th><th>Ações</th></tr>
+            </thead>
+            <tbody id="tabela"></tbody>
+        </table>
+    </section>
+
+    <dialog id="modal">
+        <form id="form">
+            <h2 id="tituloForm">Novo pacote</h2>
+            <input type="hidden" id="id">
+
+            <div class="grid">
+                <label>Nome *<input id="nome" required maxlength="150"></label>
+                <label>Valor total (R$) *<input id="valorTotal" type="number" step="0.01" min="0" required></label>
+                <label>Validade (dias) *<input id="validadeDias" type="number" min="1" value="365" required></label>
+                <label style="grid-column: 1 / -1;">Observações (opcional)<textarea id="descricao" rows="2" placeholder="Ex.: pacote de verão"></textarea></label>
+            </div>
+
+            <h3 style="margin-top:12px;">Procedimentos do pacote</h3>
+            <p style="font-size:.9em;">Marque os procedimentos e informe a quantidade de sessões de cada um.</p>
+            <div id="listaProcs"></div>
+            <p id="erro" class="erro"></p>
+
+            <div class="acoes">
+                <button type="button" id="btnCancelar">Cancelar</button>
+                <button type="submit" class="primary">Salvar</button>
+            </div>
+        </form>
+    </dialog>
+</main>
+<script src="js/pacotes.js"></script>
+</body>
+</html>

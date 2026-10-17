@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>BellaPelle - Profissionais</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header>
+    <h1>BellaPelle</h1>
+    <nav>
+        <a href="index.html">Pacientes</a>
+        <a href="profissionais.html" class="ativo">Profissionais</a>
+        <a href="salas-equipamentos.html">Salas &amp; Equipamentos</a>
+        <a href="procedimentos.html">Procedimentos</a>
+        <a href="pacotes.html">Pacotes</a>
+        <a href="agendamentos.html">Agendamentos</a>
+    </nav>
+</header>
+
+<main>
+    <section class="card">
+        <div class="toolbar">
+            <input
+                    type="text"
+                    id="busca"
+                    placeholder="Buscar por nome, CPF ou função">
+
+            <select id="filtroStatus">
+                <option value="">Todos</option>
+                <option value="Ativo" selected>Ativos</option>
+                <option value="Inativo">Inativos</option>
+            </select>
+
+            <button id="btnNovo" class="primary">
+                + Novo profissional
+            </button>
+        </div>
+
+        <p id="erroPagina" class="erro" role="alert"></p>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Nome</th>
+                <th>CPF</th>
+                <th>Função</th>
+                <th>Conselho</th>
+                <th>Vínculo</th>
+                <th>Status</th>
+                <th>Ações</th>
+            </tr>
+            </thead>
+            <tbody id="tabela"></tbody>
+        </table>
+    </section>
+
+    <dialog id="modal">
+        <form id="form">
+            <h2 id="tituloForm">Novo profissional</h2>
+
+            <input type="hidden" id="id">
+
+            <div class="grid">
+                <label>
+                    Nome *
+                    <input id="nome" required maxlength="150">
+                </label>
+
+                <label>
+                    CPF *
+                    <input
+                            id="cpf"
+                            required
+                            placeholder="000.000.000-00">
+                </label>
+
+                <label>
+                    Data de nascimento *
+                    <input
+                            id="dataNascimento"
+                            type="date"
+                            required>
+                </label>
+
+                <label>
+                    Gênero
+                    <select id="genero">
+                        <option value="">Não informado</option>
+                        <option value="F">Feminino</option>
+                        <option value="M">Masculino</option>
+                        <option value="I">Indiferente</option>
+                    </select>
+                </label>
+
+                <label>
+                    Telefone
+                    <input id="telefone" maxlength="20">
+                </label>
+
+                <label>
+                    E-mail
+                    <input id="email" type="email">
+                </label>
+
+                <label>
+                    Função *
+                    <input
+                            id="funcao"
+                            required
+                            maxlength="100"
+                            placeholder="Ex.: Esteticista, Biomédica">
+                </label>
+
+                <label>
+                    Tipo de vínculo *
+                    <select id="tipoVinculo" required>
+                        <option>CLT</option>
+                        <option>Prestador de serviço</option>
+                        <option>Sócio</option>
+                    </select>
+                </label>
+
+                <label>
+                    Tipo de conselho
+                    <input
+                            id="tipoConselho"
+                            maxlength="20"
+                            placeholder="CRBM, COREN, CREFITO...">
+                </label>
+
+                <label>
+                    Número do conselho
+                    <input id="numeroConselho" maxlength="30">
+                </label>
+
+                <label>
+                    UF do conselho
+                    <input
+                            id="ufConselho"
+                            maxlength="2"
+                            placeholder="SP">
+                </label>
+
+                <label>
+                    Comissão (%)
+                    <input
+                            id="percentualComissao"
+                            type="number"
+                            step="0.01"
+                            min="0"
+                            max="100">
+                </label>
+
+                <label>
+                    Data de admissão
+                    <input id="dataAdmissao" type="date">
+                </label>
+
+                <label>
+                    Dias e horário de trabalho
+                    <input
+                            id="diasHorarioTrabalho"
+                            maxlength="255"
+                            placeholder="Seg a Sex, 9h às 18h">
+                </label>
+            </div>
+
+            <fieldset>
+                <legend>Procedimentos habilitados</legend>
+
+                <p>
+                    Marque os procedimentos que este profissional
+                    está habilitado a realizar.
+                </p>
+
+                <div id="listaProcedimentos" class="grid"></div>
+
+                <p>
+                    Sem procedimentos marcados, o profissional
+                    ficará sem habilitações para agendamento.
+                </p>
+            </fieldset>
+
+            <p id="erro" class="erro" role="alert"></p>
+
+            <div class="acoes">
+                <button type="button" id="btnCancelar">
+                    Cancelar
+                </button>
+
+                <button type="submit" class="primary">
+                    Salvar
+                </button>
+            </div>
+        </form>
+    </dialog>
+</main>
+
+<script src="js/profissionais.js"></script>
+</body>
+</html>

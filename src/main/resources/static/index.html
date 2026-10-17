@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>BellaPelle - Pacientes</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        #modalProntuario {
+            width: min(760px, 94vw);
+            max-height: 85vh;
+            overflow: auto;
+        }
+
+        .prontuario-resumo {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 2px 16px;
+            margin: 6px 0 14px;
+            font-size: .93em;
+        }
+
+        .prontuario-resumo p,
+        .sessao p {
+            margin: 4px 0;
+        }
+
+        .sessao {
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 10px 12px;
+            margin-bottom: 10px;
+        }
+
+        .sessao h3 {
+            margin: 0 0 8px;
+            font-size: 1em;
+        }
+
+        .rotulo {
+            color: #475569;
+            font-weight: 600;
+        }
+
+        .prontuario-vazio {
+            color: #64748b;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>BellaPelle</h1>
+    <nav>
+        <a href="index.html" class="ativo">Pacientes</a>
+        <a href="profissionais.html">Profissionais</a>
+        <a href="salas-equipamentos.html">Salas &amp; Equipamentos</a>
+        <a href="procedimentos.html">Procedimentos</a>
+        <a href="pacotes.html">Pacotes</a>
+        <a href="agendamentos.html">Agendamentos</a>
+    </nav>
+</header>
+
+<main>
+    <section class="card">
+       <div class="toolbar" style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+    <input
+        type="text"
+        id="busca"
+        placeholder="Buscar por nome ou CPF"
+        style="flex: 1 1 0%; width: 100%; min-width: 0;"
+    >
+
+    <select
+        id="filtroStatus"
+        style="flex: 0 0 180px; width: 180px;"
+    >
+        <option value="">Todos</option>
+        <option value="Ativo" selected>Ativos</option>
+        <option value="Inativo">Inativos</option>
+    </select>
+
+    <button
+        id="btnNovo"
+        class="primary"
+        style="flex: 0 0 auto; white-space: nowrap;"
+    >+ Novo paciente</button>
+</div>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Nome</th>
+                <th>CPF</th>
+                <th>Telefone</th>
+                <th>Bebida</th>
+                <th>Profissional</th>
+                <th>Status</th>
+                <th>Ações</th>
+            </tr>
+            </thead>
+            <tbody id="tabela"></tbody>
+        </table>
+    </section>
+
+    <dialog id="modal">
+        <form id="form">
+            <h2 id="tituloForm">Novo paciente</h2>
+            <input type="hidden" id="id">
+
+            <div class="grid">
+                <label>Nome *<input id="nome" required></label>
+                <label>CPF *<input id="cpf" required placeholder="000.000.000-00"></label>
+                <label>Telefone *<input id="telefone" required></label>
+                <label>E-mail<input id="email" type="email"></label>
+                <label>Data de nascimento *<input id="dataNascimento" type="date" required></label>
+                <label>Gênero<input id="genero"></label>
+                <label>Peso (kg)<input id="peso" type="number" step="0.1"></label>
+                <label>Altura (cm)<input id="altura" type="number"></label>
+
+                <label>Bebida preferida
+                    <select id="preferenciaBebida">
+                        <option>Sem preferência</option>
+                        <option>Chá</option>
+                        <option>Café</option>
+                    </select>
+                </label>
+
+                <label>Atendimento preferido por
+                    <select id="preferenciaProfissional" required>
+                        <option value="I" selected>Indiferente</option>
+                        <option value="F">Feminino</option>
+                        <option value="M">Masculino</option>
+                    </select>
+                </label>
+
+                <label>Canal de origem
+                    <select id="canalOrigem">
+                        <option value="">-</option>
+                        <option>WhatsApp</option>
+                        <option>Instagram</option>
+                        <option>Presencial</option>
+                    </select>
+                </label>
+
+                <label>Endereço<input id="endereco"></label>
+                <label>Contato de emergência (nome)<input id="contatoEmergenciaNome"></label>
+                <label>Contato de emergência (telefone)<input id="contatoEmergenciaTelefone"></label>
+            </div>
+
+            <label>Alergias<textarea id="alergias" rows="2"></textarea></label>
+            <label>Restrições de saúde<textarea id="restricoesSaude" rows="2"></textarea></label>
+            <label>Observações<textarea id="observacoes" rows="2"></textarea></label>
+
+            <p id="erro" class="erro"></p>
+
+            <div class="acoes">
+                <button type="button" id="btnCancelar">Cancelar</button>
+                <button type="submit" class="primary">Salvar</button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="modalProntuario">
+        <div>
+            <h2 id="prontuarioTitulo">Prontuário</h2>
+            <div id="prontuarioResumo" class="prontuario-resumo"></div>
+            <div id="prontuarioConteudo"></div>
+            <p id="prontuarioErro" class="erro" hidden></p>
+            <div class="acoes">
+                <button type="button" id="btnFecharProntuario">Fechar</button>
+            </div>
+        </div>
+    </dialog>
+</main>
+    <dialog id="modalAnamnese">
+    <form id="anaForm" onsubmit="salvarAnamnese(event)">
+        <h2>Anamnese</h2>
+        <p>Preenchida em: <span id="anaData">—</span></p>
+        <label>Alergias
+            <textarea id="anaAlergias" rows="2"></textarea>
+        </label>
+        <label>Medicações de uso contínuo
+            <textarea id="anaMedicacoes" rows="2"></textarea>
+        </label>
+        <label>Cirurgias prévias
+            <textarea id="anaCirurgias" rows="2"></textarea>
+        </label>
+        <label>Gestante ou lactante
+            <select id="anaGestante" required>
+                <option value="">Selecione</option>
+                <option value="true">Sim</option>
+                <option value="false">Não</option>
+            </select>
+        </label>
+        <label>Uso de isotretinoína
+            <select id="anaIsotretinoina" required>
+                <option value="">Selecione</option>
+                <option value="true">Sim</option>
+                <option value="false">Não</option>
+            </select>
+        </label>
+        <label>Histórico de queloide
+            <select id="anaQueloide" required>
+                <option value="">Selecione</option>
+                <option value="true">Sim</option>
+                <option value="false">Não</option>
+            </select>
+        </label>
+        <label>Doenças de pele
+            <textarea id="anaDoencas" rows="2"></textarea>
+        </label>
+        <label>Contraindicações identificadas
+            <textarea id="anaContraindicacoes" rows="2"></textarea>
+        </label>
+        <p id="anaErro"></p>
+        <p id="anaOk"></p>
+        <menu>
+            <button type="button" onclick="anaFechar()">Cancelar</button>
+            <button type="submit" class="primary">Salvar</button>
+        </menu>
+    </form>
+</dialog>
+<script src="js/pacientes.js"></script>
+</body>
+</html>
