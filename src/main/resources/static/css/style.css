@@ -448,7 +448,8 @@ details.menu summary::-webkit-details-marker {
         width: auto;
     }
 }
-/* Ajuste da barra de pesquisa e do filtro de pacientes */
+
+/* Ajuste da barra de pesquisa e do filtro */
 .toolbar {
     display: grid !important;
     grid-template-columns: minmax(220px, 1fr) 180px auto;
@@ -486,4 +487,106 @@ details.menu summary::-webkit-details-marker {
         width: 100% !important;
         min-width: 0;
     }
+}
+
+.card h2 {
+    margin-top: 0;
+}
+
+.badge.Pendente {
+    background: #fdf3d7;
+    color: #8a6d1a;
+}
+
+.badge.Paga {
+    background: #dff3e4;
+    color: #1e7a3c;
+}
+
+.badge.Vencida {
+    background: #f6dede;
+    color: #a33;
+}
+
+.saldo-info {
+    margin: 10px 0 4px;
+    display: grid;
+    gap: 6px;
+}
+
+.saldo-linha {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    flex-wrap: wrap;
+    background: #f8f5f2;
+    border: 1px solid #e6dcd3;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: .92em;
+}
+
+.saldo-linha strong {
+    min-width: 170px;
+}
+
+.saldo-destaque {
+    border-color: #b06a78;
+    background: #f6eaec;
+}
+
+.saldo-vazio {
+    color: #8a6d1a;
+    font-size: .92em;
+}
+
+/* Correção dos cartões de seleção de procedimento */
+#listaDisponiveisAtendimento .opcao {
+    align-items: center;
+    text-align: left;
+}
+
+#listaDisponiveisAtendimento .opcao input[type="radio"],
+.opcoes-cancel .opcao input[type="radio"] {
+    flex: 0 0 16px;
+    width: 16px;
+    min-width: 16px;
+    height: 16px;
+    padding: 0;
+    margin: 0;
+    accent-color: #8a2d4d;
+}
+
+#listaDisponiveisAtendimento .opcao span,
+.opcoes-cancel .opcao span {
+    flex: 1 1 auto;
+    min-width: 0;
+    text-align: left;
+}
+/* ==== Filtros da listagem de vendas ==== */
+
+.filtros-vendas {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.filtros-vendas .filtro-periodo {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 0;
+    font-size: 13px;
+    color: #4a3b40;
+}
+
+.filtros-vendas input[type="date"] {
+    width: auto;
+}
+
+.filtros-vendas input[type="text"] {
+    flex: 1 1 220px;
+    min-width: 0;
 }

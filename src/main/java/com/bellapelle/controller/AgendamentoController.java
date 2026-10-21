@@ -2,7 +2,10 @@ package com.bellapelle.controller;
 
 import com.bellapelle.dto.AgendamentoRequest;
 import com.bellapelle.dto.AgendamentoResponse;
+import com.bellapelle.dto.AtendimentoRequest;
+import com.bellapelle.exception.RegraNegocioException;
 import com.bellapelle.service.AgendamentoService;
+import com.bellapelle.service.AtendimentoService;
 import jakarta.validation.Valid;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -16,9 +19,11 @@ import java.util.List;
 public class AgendamentoController {
 
     private final AgendamentoService service;
+    private final AtendimentoService atendimentoService;
 
-    public AgendamentoController(AgendamentoService service) {
+    public AgendamentoController(AgendamentoService service, AtendimentoService atendimentoService) {
         this.service = service;
+        this.atendimentoService = atendimentoService;
     }
 
     @GetMapping
@@ -44,9 +49,26 @@ public class AgendamentoController {
         return service.atualizar(id, req);
     }
 
+    /**
+     * Altera o status do agendamento.
+     * Para "Realizado" é obrigatório enviar no corpo os dados da sessão
+     * (evolução e, se o procedimento for injetável, lote/fabricante/validade),
+     * pois o atendimento é registrado no prontuário na mesma transação.
+     */
     @PatchMapping("/{id}/status")
-    public AgendamentoResponse status(@PathVariable Long id, @RequestParam String status,
-                                      @RequestParam(required = false) String tipoCancelamento) {
+    public AgendamentoResponse status(@PathVariable Long id,
+                                      @RequestParam String status,
+                                      @RequestParam(required = false) String tipoCancelamento,
+                                      @Valid @RequestBody(required = false) AtendimentoRequest atendimento) {
+        if ("Realizado".equals(status)) {
+            if (atendimento == null) {
+                throw new RegraNegocioException(
+                        "Preencha as informações da sessão para marcá-la como realizada.");
+            }
+            atendimentoService.realizar(id, atendimento);
+            return service.buscar(id);
+        }
+
         return service.alterarStatus(id, status, tipoCancelamento);
     }
 

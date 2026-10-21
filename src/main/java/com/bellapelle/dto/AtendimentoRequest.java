@@ -15,6 +15,8 @@ public record AtendimentoRequest(
         @Size(max = 150, message = "O fabricante deve ter no máximo 150 caracteres.")
         String fabricante,
 
-        LocalDate validadeLote
+        LocalDate validadeLote,
+
+        Long idProcedimento
 ) {
 }

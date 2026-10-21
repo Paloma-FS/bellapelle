@@ -10,12 +10,15 @@
 <header>
     <h1>BellaPelle</h1>
     <nav>
-        <a href="index.html">Pacientes</a>
+         <a href="painel.html" class="ativo">Painel</a>
+        <a href="index.html" class="ativo">Pacientes</a>
         <a href="profissionais.html">Profissionais</a>
         <a href="salas-equipamentos.html">Salas &amp; Equipamentos</a>
         <a href="procedimentos.html">Procedimentos</a>
         <a href="pacotes.html">Pacotes</a>
-        <a href="agendamentos.html" class="ativo">Agendamentos</a>
+        <a href="agendamentos.html">Agendamentos</a>
+        <a href="vendas.html">Vendas</a>
+        <a href="relatorios.html">Relatórios</a>
     </nav>
 </header>
 <main>
@@ -30,30 +33,58 @@
             <button id="btnNovo" class="primary">+ Novo agendamento</button>
         </div>
         <table>
-            <thead><tr><th>Data/hora</th><th>Paciente</th><th>Procedimento</th><th>Profissional</th><th>Sala</th><th>Equipamento</th><th>Duração</th><th>Status</th><th>Ações</th></tr></thead>
+            <thead>
+            <tr>
+                <th>Data/hora</th>
+                <th>Paciente</th>
+                <th>Procedimento</th>
+                <th>Profissional</th>
+                <th>Sala</th>
+                <th>Equipamento</th>
+                <th>Duração</th>
+                <th>Status</th>
+                <th>Ações</th>
+            </tr>
+            </thead>
             <tbody id="tabela"></tbody>
         </table>
     </section>
 
-    <!-- Novo / editar -->
+    <!-- Novo / editar agendamento -->
     <dialog id="modal">
         <form id="form">
             <h2 id="tituloForm">Novo agendamento</h2>
             <input type="hidden" id="id">
             <input type="hidden" id="dataHora">
+
             <div class="grid">
-                <label>Paciente *<select id="idPaciente" required></select></label>
-                <label>Procedimento *<select id="idProcedimento" required></select></label>
-                <label>Profissional *<select id="idProfissional" required></select></label>
-                <label>Sala *<select id="idSala" required></select></label>
-                <label>Equipamento<select id="idEquipamento"></select></label>
-                <label>Duração (min)<input id="duracao" type="number" min="1"></label>
-                <label>Data *<input id="data" type="date" required></label>
+                <label>Paciente *
+                    <select id="idPaciente" required></select>
+                </label>
+                <label>Procedimento *
+                    <select id="idProcedimento" required></select>
+                </label>
+                <label>Profissional *
+                    <select id="idProfissional" required></select>
+                </label>
+                <label>Sala *
+                    <select id="idSala" required></select>
+                </label>
+                <label>Equipamento
+                    <select id="idEquipamento"></select>
+                </label>
+                <label>Duração (min)
+                    <input id="duracao" type="number" min="1">
+                </label>
+                <label>Data *
+                    <input id="data" type="date" required>
+                </label>
             </div>
 
             <div class="horarios-box">
                 <div class="horarios-titulo">
-                    Horários do dia <span id="horarioEscolhido" class="horario-escolhido"></span>
+                    Horários do dia
+                    <span id="horarioEscolhido" class="horario-escolhido"></span>
                 </div>
                 <div id="horarios" class="slots"></div>
                 <div class="legenda">
@@ -71,18 +102,88 @@
         </form>
     </dialog>
 
+    <!-- Registro da sessão realizada -->
+    <dialog id="modalAtendimento">
+        <form id="formAtendimento">
+            <h2>Registrar sessão realizada</h2>
+            <p id="atendimentoResumo" class="dica"></p>
+
+            <section id="historicoAtendimento" class="horarios-box" hidden>
+                <strong>Últimas sessões registradas</strong>
+                <div id="listaHistoricoAtendimento"></div>
+            </section>
+
+            <section id="disponiveisAtendimento" class="horarios-box" hidden>
+                <strong>Procedimentos disponíveis da paciente</strong>
+                <div id="listaDisponiveisAtendimento"></div>
+                <p id="avisoSaldo" class="dica" hidden>
+                    A paciente não possui sessões disponíveis. Registre uma venda antes de
+                    marcar o atendimento como realizado.
+                </p>
+            </section>
+
+            <label for="atendimentoDescricao">
+                Informações e evolução da sessão *
+                <textarea
+                    id="atendimentoDescricao"
+                    rows="5"
+                    maxlength="5000"
+                    required
+                    placeholder="Descreva o que foi realizado e as informações importantes da sessão."></textarea>
+            </label>
+
+            <section id="dadosInjetavel" class="grid" hidden>
+                <label for="atendimentoFabricante">
+                    Fabricante do produto *
+                    <input id="atendimentoFabricante" type="text" maxlength="150">
+                </label>
+                <label for="atendimentoNumeroLote">
+                    Número do lote *
+                    <input id="atendimentoNumeroLote" type="text" maxlength="50">
+                </label>
+                <label for="atendimentoValidadeLote">
+                    Validade do lote *
+                    <input id="atendimentoValidadeLote" type="date">
+                </label>
+            </section>
+
+            <div id="erroAtendimento" class="aviso aviso-erro" hidden></div>
+            <div class="acoes">
+                <button type="button" id="btnAtendimentoFechar">Voltar</button>
+                <button type="submit" id="btnConfirmarAtendimento" class="primary">
+                    Confirmar sessão realizada
+                </button>
+            </div>
+        </form>
+    </dialog>
+
     <!-- Cancelamento -->
     <dialog id="modalCancel">
         <form id="formCancel">
             <h2>Cancelar agendamento</h2>
             <p id="cancelResumo" class="dica"></p>
             <div class="opcoes-cancel">
-                <label class="opcao"><input type="radio" name="tipoCancel" value="Sem custo" checked>
-                    <span><strong>Sem custo</strong><small>Cancelado com antecedência, sem cobrança.</small></span></label>
-                <label class="opcao"><input type="radio" name="tipoCancel" value="Com débito">
-                    <span><strong>Com débito</strong><small>Cancelamento tardio, gera cobrança.</small></span></label>
-                <label class="opcao"><input type="radio" name="tipoCancel" value="Falta justificada">
-                    <span><strong>Falta justificada</strong><small>Paciente apresentou justificativa.</small></span></label>
+                <label class="opcao">
+                    <input type="radio" name="tipoCancel" value="Sem custo" checked>
+                    <span>
+                        <strong>Sem custo</strong>
+                        <small>Cancelado com antecedência, sem cobrança.</small>
+                    </span>
+                </label>
+                <label class="opcao">
+                    <input type="radio" name="tipoCancel" value="Com débito">
+                    <span>
+                        <strong>Com débito</strong>
+                        <small>Cancelamento tardio, gera cobrança.</small>
+                    </span>
+                </label>
+                <label class="opcao">
+                    <input type="radio" name="tipoCancel" value="Falta justificada">
+                    <span>
+                        <strong>Falta justificada</strong>
+                        <small>Paciente apresentou justificativa.</small>
+                    </span>
+                </label>
             </div>
             <div id="erroCancel" class="aviso aviso-erro" hidden></div>
             <div class="acoes">
@@ -92,85 +193,8 @@
         </form>
     </dialog>
 
-    <!-- Prontuário e realização do atendimento -->
-<dialog id="modalAtendimento">
-    <form id="formAtendimento">
-        <h2 id="tituloAtendimento">Prontuário — realizar atendimento</h2>
-
-        <p id="atendimentoResumo" class="dica"></p>
-
-        <section aria-labelledby="tituloHistoricoAtendimento">
-            <h3 id="tituloHistoricoAtendimento">Histórico do paciente</h3>
-            <div id="historicoAtendimento"></div>
-        </section>
-
-        <div id="camposNovoAtendimento">
-            <h3>Registro desta sessão</h3>
-
-            <label>
-                Anotações / evolução da sessão *
-                <textarea
-                    id="descricaoEvolucaoAtendimento"
-                    rows="6"
-                    required
-                    placeholder="Registre as anotações do atendimento"
-                ></textarea>
-            </label>
-
-            <fieldset id="dadosInjetavelAtendimento" hidden disabled>
-                <legend>Dados do injetável utilizado</legend>
-
-                <div class="grid">
-                    <label>
-                        Fabricante *
-                        <input
-                            id="fabricanteAtendimento"
-                            maxlength="150"
-                        >
-                    </label>
-
-                    <label>
-                        Lote *
-                        <input
-                            id="numeroLoteAtendimento"
-                            maxlength="50"
-                        >
-                    </label>
-
-                    <label>
-                        Validade *
-                        <input
-                            id="validadeLoteAtendimento"
-                            type="date"
-                        >
-                    </label>
-                </div>
-            </fieldset>
-        </div>
-
-        <div
-            id="erroAtendimento"
-            class="aviso aviso-erro"
-            hidden
-        ></div>
-
-        <div class="acoes">
-            <button type="button" id="btnAtendimentoFechar">
-                Fechar
-            </button>
-
-            <button
-                type="submit"
-                id="btnSalvarAtendimento"
-                class="primary"
-            >
-                Salvar atendimento e marcar realizado
-            </button>
-        </div>
-    </form>
-</dialog>
     <div id="toast" class="toast" hidden></div>
 </main>
-<script src="js/agendamentos.js"></script>
+<script src="js/agendamentos.js?v=3"></script>
 </body>
 </html>

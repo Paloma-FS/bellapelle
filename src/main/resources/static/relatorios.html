@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>BellaPelle - Relatórios</title>
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        .relatorio {
+            margin-bottom: 22px;
+        }
+
+        .filtros-relatorio {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            align-items: end;
+            margin: 14px 0;
+        }
+
+        .filtros-relatorio label {
+            margin: 0;
+        }
+
+        .mensagem-relatorio {
+            min-height: 20px;
+            color: #8c1d18;
+        }
+
+        .tabela-scroll {
+            overflow-x: auto;
+        }
+
+        .vazio {
+            padding: 12px 0;
+            color: #64748b;
+        }
+
+        @media (max-width: 700px) {
+            header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            nav {
+                flex-wrap: wrap;
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>BellaPelle</h1>
+    <nav>
+        <a href="painel.html" class="ativo">Painel</a>
+        <a href="index.html">Pacientes</a>
+        <a href="profissionais.html">Profissionais</a>
+        <a href="salas-equipamentos.html">Salas &amp; Equipamentos</a>
+        <a href="procedimentos.html">Procedimentos</a>
+        <a href="pacotes.html">Pacotes</a>
+        <a href="agendamentos.html">Agendamentos</a>
+        <a href="vendas.html">Vendas</a>
+        <a href="relatorios.html" class="ativo">Relatórios</a>
+    </nav>
+</header>
+
+<main>
+    <section class="card relatorio">
+        <h2>Comissões dos profissionais</h2>
+        <p>Comissão calculada pelo valor e pelo percentual cadastrados no procedimento.</p>
+
+        <form id="formComissoes" class="filtros-relatorio">
+            <label>
+                Data inicial
+                <input type="date" id="comissaoInicio" required>
+            </label>
+
+            <label>
+                Data final
+                <input type="date" id="comissaoFim" required>
+            </label>
+
+            <button type="submit" class="primary">Buscar comissões</button>
+        </form>
+
+        <p id="comissaoMensagem" class="mensagem-relatorio" role="status"></p>
+
+        <div class="tabela-scroll">
+            <table>
+                <thead>
+                <tr>
+                    <th>Profissional</th>
+                    <th>Comissão</th>
+                    <th>Procedimento realizado</th>
+                    <th>Data</th>
+                </tr>
+                </thead>
+                <tbody id="tabelaComissoes"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="card relatorio">
+        <h2>Faltas de pacientes</h2>
+        <p>“Faltas anteriores” mostra quantas faltas a paciente teve antes daquela data.</p>
+
+        <form id="formFaltas" class="filtros-relatorio">
+            <label>
+                Data inicial
+                <input type="date" id="faltaInicio" required>
+            </label>
+
+            <label>
+                Data final
+                <input type="date" id="faltaFim" required>
+            </label>
+
+            <button type="submit" class="primary">Buscar faltas</button>
+        </form>
+
+        <p id="faltaMensagem" class="mensagem-relatorio" role="status"></p>
+
+        <div class="tabela-scroll">
+            <table>
+                <thead>
+                <tr>
+                    <th>Paciente</th>
+                    <th>Dia da falta</th>
+                    <th>Faltas anteriores</th>
+                </tr>
+                </thead>
+                <tbody id="tabelaFaltas"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="card relatorio">
+        <h2>Vendas</h2>
+
+        <form id="formVendas" class="filtros-relatorio">
+            <label>
+                Data inicial
+                <input type="date" id="vendaInicio" required>
+            </label>
+
+            <label>
+                Data final
+                <input type="date" id="vendaFim" required>
+            </label>
+
+            <label>
+                Tipo
+                <select id="vendaTipo">
+                    <option value="TODOS">Procedimentos e pacotes</option>
+                    <option value="PROCEDIMENTO">Procedimentos</option>
+                    <option value="PACOTE">Pacotes</option>
+                </select>
+            </label>
+
+            <button type="submit" class="primary">Buscar vendas</button>
+        </form>
+
+        <p id="vendaMensagem" class="mensagem-relatorio" role="status"></p>
+
+        <div class="tabela-scroll">
+            <table>
+                <thead>
+                <tr>
+                    <th>Tipo</th>
+                    <th>Procedimento ou pacote</th>
+                    <th>Quantidade vendida</th>
+                    <th>Valor total das vendas</th>
+                    <th>Data da última venda</th>
+                </tr>
+                </thead>
+                <tbody id="tabelaVendas"></tbody>
+            </table>
+        </div>
+    </section>
+</main>
+
+<script src="js/relatorios.js"></script>
+</body>
+</html>
