@@ -28,7 +28,7 @@ let procedimentosCarregados = false;
 function esc(texto) {
     const entidades = {
         "&": "&amp;",
-        "<​": "&lt;",
+        "<": "&lt;",
         ">": "&gt;",
         '"': "&quot;",
         "'": "&#39;"

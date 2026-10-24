@@ -1,13 +1,12 @@
 const $ = (id) => document.getElementById(id);
 
 function esc(valor) {
-    return String(valor ?? "").replace(/[&<>"']/g, (caractere) => ({
-        "&": "&amp;",
-        "<​": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#39;"
-    }[caractere]));
+    return String(valor ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<​", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#39;");
 }
 
 async function consultar(url) {

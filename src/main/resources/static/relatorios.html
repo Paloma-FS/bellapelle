@@ -7,54 +7,81 @@
     <link rel="stylesheet" href="css/style.css">
 
     <style>
-        .relatorio {
-            margin-bottom: 22px;
-        }
+      .relatorio {
+        margin-bottom: 22px;
+    }
 
+    .filtros-relatorio {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 12px;
+        align-items: end;
+        margin: 14px 0;
+    }
+
+    .filtros-relatorio label {
+        margin: 0;
+    }
+
+    .filtros-relatorio button {
+        justify-self: start;
+        width: auto;
+        white-space: nowrap;
+    }
+
+    .mensagem-relatorio {
+        min-height: 20px;
+        color: #8c1d18;
+    }
+
+    .tabela-scroll {
+        overflow-x: auto;
+    }
+
+    .vazio {
+        padding: 12px 0;
+        color: #64748b;
+    }
+
+    .relatorios-tabs {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+    }
+
+    .relatorios-tabs button {
+        padding: 10px 18px;
+        border: 1px solid #2f5d50;
+        border-radius: 8px;
+        background: #fff;
+        color: #2f5d50;
+        cursor: pointer;
+        font-weight: 600;
+    }
+
+    .relatorios-tabs button.ativa {
+        background: #2f5d50;
+        color: #fff;
+    }
+
+    .relatorios-secao[hidden] {
+        display: none !important;
+    }
+
+    @media (max-width: 700px) {
         .filtros-relatorio {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 12px;
-            align-items: end;
-            margin: 14px 0;
+            grid-template-columns: 1fr;
         }
-
-        .filtros-relatorio label {
-            margin: 0;
-        }
-
-        .mensagem-relatorio {
-            min-height: 20px;
-            color: #8c1d18;
-        }
-
-        .tabela-scroll {
-            overflow-x: auto;
-        }
-
-        .vazio {
-            padding: 12px 0;
-            color: #64748b;
-        }
-
-        @media (max-width: 700px) {
-            header {
-                align-items: flex-start;
-                flex-direction: column;
-            }
-
-            nav {
-                flex-wrap: wrap;
-                margin-left: 0;
-            }
-        }
+    }
+</style>
     </style>
 </head>
 <body>
 <header>
     <h1>BellaPelle</h1>
     <nav>
-        <a href="painel.html" class="ativo">Painel</a>
+        <a href="painel.html">Painel</a>
         <a href="index.html">Pacientes</a>
         <a href="profissionais.html">Profissionais</a>
         <a href="salas-equipamentos.html">Salas &amp; Equipamentos</a>
@@ -64,10 +91,21 @@
         <a href="vendas.html">Vendas</a>
         <a href="relatorios.html" class="ativo">Relatórios</a>
     </nav>
+    <div class="usuario-rodape">
+        <strong>Dra Camila Rocha</strong>
+        <small>Responsável Técnica</small>
+    </div>
 </header>
 
 <main>
-    <section class="card relatorio">
+    <div class="relatorios-tabs">
+        <button type="button" class="ativa" onclick="alternarSecaoRelatorio('comissoes')">Comissões</button>
+        <button type="button" onclick="alternarSecaoRelatorio('faltas')">Faltas de pacientes</button>
+        <button type="button" onclick="alternarSecaoRelatorio('vendas')">Vendas</button>
+    </div>
+
+    <!-- COMISSÕES -->
+    <section id="secaoComissoes" class="card relatorio relatorios-secao">
         <h2>Comissões dos profissionais</h2>
         <p>Comissão calculada pelo valor e pelo percentual cadastrados no procedimento.</p>
 
@@ -102,7 +140,8 @@
         </div>
     </section>
 
-    <section class="card relatorio">
+    <!-- FALTAS -->
+    <section id="secaoFaltas" class="card relatorio relatorios-secao" hidden>
         <h2>Faltas de pacientes</h2>
         <p>“Faltas anteriores” mostra quantas faltas a paciente teve antes daquela data.</p>
 
@@ -136,7 +175,8 @@
         </div>
     </section>
 
-    <section class="card relatorio">
+    <!-- VENDAS -->
+    <section id="secaoVendas" class="card relatorio relatorios-secao" hidden>
         <h2>Vendas</h2>
 
         <form id="formVendas" class="filtros-relatorio">
@@ -181,6 +221,6 @@
     </section>
 </main>
 
-<script src="js/relatorios.js"></script>
+<script src="js/relatorios.js?v=2"></script>
 </body>
 </html>

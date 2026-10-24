@@ -6,52 +6,14 @@
     <title>BellaPelle - Pacientes</title>
     <link rel="stylesheet" href="css/style.css">
     <style>
-        #modalProntuario {
-            width: min(760px, 94vw);
-            max-height: 85vh;
-            overflow: auto;
-        }
-
-        .prontuario-resumo {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-            gap: 2px 16px;
-            margin: 6px 0 14px;
-            font-size: .93em;
-        }
-
-        .prontuario-resumo p,
-        .sessao p {
-            margin: 4px 0;
-        }
-
-        .sessao {
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            padding: 10px 12px;
-            margin-bottom: 10px;
-        }
-
-        .sessao h3 {
-            margin: 0 0 8px;
-            font-size: 1em;
-        }
-
-        .rotulo {
-            color: #475569;
-            font-weight: 600;
-        }
-
-        .prontuario-vazio {
-            color: #64748b;
-        }
+       
     </style>
 </head>
 <body>
 <header>
     <h1>BellaPelle</h1>
     <nav>
-        <a href="painel.html" class="ativo">Painel</a>
+        <a href="painel.html">Painel</a>
         <a href="index.html" class="ativo">Pacientes</a>
         <a href="profissionais.html">Profissionais</a>
         <a href="salas-equipamentos.html">Salas &amp; Equipamentos</a>
@@ -61,9 +23,14 @@
         <a href="vendas.html">Vendas</a>
         <a href="relatorios.html">Relatórios</a>
     </nav>
+    <div class="usuario-rodape">
+        <strong>Dra Camila Rocha</strong>
+        <small>Responsável Técnica</small>
+    </div>
 </header>
 
 <main>
+    <h2 class="titulo-pagina">Pacientes</h2>
     <section class="card">
        <div class="toolbar" style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
     <input

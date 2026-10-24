@@ -27,7 +27,7 @@ let versaoPesquisa = 0;
 function esc(texto) {
     const entidades = {
         "&": "&amp;",
-        "<​": "&lt;",
+        "<": "&lt;",
         ">": "&gt;",
         '"': "&quot;",
         "'": "&#39;"

@@ -22,25 +22,30 @@
     #listaProcs .proc-qtd { display: flex; align-items: center; gap: 6px; white-space: nowrap; }
     #listaProcs input.qtdProc { width: 70px; margin: 0; }
     #listaProcs input.qtdProc:disabled { background: #f1f5f9; opacity: .6; }
-</style>
+    </style>
 </head>
 <body>
 <header>
     <h1>BellaPelle</h1>
-  <nav>
-         <a href="painel.html" class="ativo">Painel</a>
-        <a href="index.html" class="ativo">Pacientes</a>
+    <nav>
+        <a href="painel.html">Painel</a>
+        <a href="index.html">Pacientes</a>
         <a href="profissionais.html">Profissionais</a>
         <a href="salas-equipamentos.html">Salas &amp; Equipamentos</a>
         <a href="procedimentos.html">Procedimentos</a>
-        <a href="pacotes.html">Pacotes</a>
+        <a href="pacotes.html" class="ativo">Pacotes</a>
         <a href="agendamentos.html">Agendamentos</a>
         <a href="vendas.html">Vendas</a>
         <a href="relatorios.html">Relatórios</a>
     </nav>
+    <div class="usuario-rodape">
+        <strong>Dra Camila Rocha</strong>
+        <small>Responsável Técnica</small>
+    </div>
 </header>
 
 <main>
+    <h2 class="titulo-pagina">Pacotes</h2>
     <section class="card">
         <div class="toolbar">
             <input type="text" id="busca" placeholder="Buscar por nome">
@@ -83,6 +88,6 @@
         </form>
     </dialog>
 </main>
-<script src="js/pacotes.js"></script>
+<script src="js/pacotes.js?v=4"></script>
 </body>
 </html>

@@ -9,7 +9,7 @@ let versaoPesquisaEquipamentos = 0;
 function esc(texto) {
     const entidades = {
         "&": "&amp;",
-        "<​": "&lt;",
+        "<": "&lt;",
         ">": "&gt;",
         '"': "&quot;",
         "'": "&#39;"
@@ -127,14 +127,17 @@ async function executarOperacao(acao, idErro = null) {
 }
 
 /* -------------------- ABAS -------------------- */
-
 function alternarTab(tab) {
     if (ocupado) return;
 
     const mostrarSalas = tab === "salas";
 
+    $("tabSalas").hidden = !mostrarSalas;
+    $("tabEquipamentos").hidden = mostrarSalas;
+
     $("tabSalas").classList.toggle("ativa", mostrarSalas);
     $("tabEquipamentos").classList.toggle("ativa", !mostrarSalas);
+
     $("tabBtnSalas").classList.toggle("ativa", mostrarSalas);
     $("tabBtnEquipamentos").classList.toggle("ativa", !mostrarSalas);
 
@@ -508,11 +511,7 @@ $("formEquipamento").addEventListener("submit", async (evento) => {
 
 /* -------------------- EVENTOS -------------------- */
 
-/*
- * Os botões Cancelar do HTML já fecham os respectivos diálogos.
- * Durante uma operação, executarOperacao() os desabilita.
- * Aqui também bloqueamos o fechamento pela tecla Esc.
- */
+
 ["modalSala", "modalEquipamento"].forEach((id) => {
     $(id).addEventListener("cancel", (evento) => {
         if (ocupado) evento.preventDefault();

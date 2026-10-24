@@ -36,7 +36,7 @@ function ouvir(id, evento, funcao) {
 function esc(valor) {
     return String(valor ?? "").replace(/[&<>"']/g, (caractere) => ({
         "&": "&amp;",
-        "<​": "&lt;",
+        "<": "&lt;",
         ">": "&gt;",
         '"': "&quot;",
         "'": "&#39;"

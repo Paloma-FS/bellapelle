@@ -6,7 +6,7 @@ let idsListados = [];
 
 function esc(t) {
     return String(t ?? "").replace(/[&<>"']/g, (c) => ({
-        "&": "&amp;", "<​": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
     }[c]));
 }
 
@@ -43,9 +43,9 @@ function linha(p) {
     const itens = Array.isArray(p.itens) ? p.itens : [];
     const total = itens.reduce((s, i) => s + i.numeroSessoes, 0);
     const resumo = itens.length
-        ? itens.map(i => `${esc(i.nomeProcedimento)} (${i.numeroSessoes}x)`).join("<​br>")
-          + `<br><small>Total: ${total} sessões</small>`
-        : "-";
+        ? itens.map(i => `<div>${esc(i.nomeProcedimento)} (${i.numeroSessoes}x)</div>`).join("")
+          + `<div><small>Total: ${total} sessões</small></div>`
+        : "-";;
     return `<tr>
         <td>${esc(p.nome)}</td><td>${esc(p.descricao || "-")}</td><td>${resumo}</td>
         <td>${moeda(p.valorTotal)}</td><td>${p.validadeDias} dias</td>

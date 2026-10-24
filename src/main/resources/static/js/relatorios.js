@@ -1,12 +1,13 @@
 "use strict";
 
 function esc(valor) {
-    return String(valor ?? "")
-        .replaceAll("&", "&amp;")
-        .replaceAll("<​", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
+    return String(valor ?? "").replace(/[&<>"']/g, (c) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+    }[c]));
 }
 
 function formatarData(valor) {
@@ -22,6 +23,26 @@ function formatarMoeda(valor) {
     return Number(valor ?? 0).toLocaleString("pt-BR", {
         style: "currency",
         currency: "BRL"
+    });
+}
+
+/* ---- abas: comissões / faltas / vendas ---- */
+function alternarSecaoRelatorio(secao) {
+    const secoes = {
+        comissoes: document.getElementById("secaoComissoes"),
+        faltas: document.getElementById("secaoFaltas"),
+        vendas: document.getElementById("secaoVendas")
+    };
+
+    const botoes = document.querySelectorAll(".relatorios-tabs button");
+    const nomes = ["comissoes", "faltas", "vendas"];
+
+    Object.entries(secoes).forEach(([nome, elemento]) => {
+        if (elemento) elemento.hidden = nome !== secao;
+    });
+
+    botoes.forEach((botao, indice) => {
+        botao.classList.toggle("ativa", nomes[indice] === secao);
     });
 }
 
@@ -185,4 +206,6 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("vendaTipo").value
         );
     });
+
+    alternarSecaoRelatorio("comissoes");
 });
