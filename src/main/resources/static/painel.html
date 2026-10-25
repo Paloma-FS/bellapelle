@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>BellaPelle - Painel</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/painel.css?v=1">
 </head>
 <body>
 <header>
@@ -85,53 +86,83 @@
     </section>
 </main>
 
-<dialog id="modalAgendamento">
-    <form id="formAgendamento">
-        <h2>Novo agendamento</h2>
+<dialog id="modal">
+    <form id="form">
+        <h2 id="tituloForm">Novo agendamento</h2>
 
-        <div class="modal-grid">
-            <label class="inteira">Paciente *
-                <div class="campo-busca">
-                    <input type="text" id="buscaPaciente" placeholder="Digite o nome da paciente…" autocomplete="off">
-                    <div id="sugestoesPaciente" class="sugestoes" hidden></div>
+        <input type="hidden" id="id">
+        <input type="hidden" id="dataHora">
+        <input type="hidden" id="idPaciente">
+
+        <div class="grid">
+            <label>Paciente *
+                <div class="busca-paciente">
+                    <input
+                        id="pacienteBusca"
+                        type="text"
+                        placeholder="Digite o nome ou CPF para buscar"
+                        autocomplete="off"
+                    >
+                    <div id="pacienteLista" class="lista-pacientes" hidden></div>
                 </div>
-                <input type="hidden" id="pacienteSelecionada">
+                <small id="pacienteAviso" class="pac-aviso" hidden>
+                    Selecione uma paciente da lista (clique no nome ou pressione Enter).
+                </small>
             </label>
 
             <label>Procedimento *
-                <select id="procedimento" required></select>
+                <select id="idProcedimento" required></select>
             </label>
 
             <label>Profissional *
-                <select id="profissional" required></select>
+                <select id="idProfissional" required></select>
             </label>
 
             <label>Sala *
-                <select id="sala" required></select>
+                <select id="idSala" required></select>
             </label>
 
             <label>Equipamento
-                <select id="equipamento"></select>
+                <select id="idEquipamento"></select>
             </label>
 
-            <label>Data e hora *
-                <input id="dataHora" type="datetime-local" required>
+            <label>Duração (min)
+                <input id="duracao" type="number" min="1">
             </label>
 
-            <label>Duração (minutos) *
-                <input id="duracao" type="number" min="1" required>
+            <label>Data *
+                <input id="data" type="date" required>
             </label>
         </div>
 
-        <p id="erroAgendamento" class="erro-painel" hidden></p>
+        <div id="infoSaldo" class="saldo-info" hidden></div>
+
+        <div class="horarios-box">
+            <div class="horarios-titulo">
+                Horários do dia
+                <span id="horarioEscolhido" class="horario-escolhido"></span>
+            </div>
+
+            <div id="horarios" class="slots"></div>
+
+            <div class="legenda">
+                <span><i class="lg livre"></i>Livre</span>
+                <span><i class="lg ocupado"></i>Ocupado</span>
+                <span><i class="lg sel"></i>Escolhido</span>
+            </div>
+        </div>
+
+        <div id="erro" class="aviso aviso-erro" hidden></div>
 
         <div class="acoes">
-            <button type="button" id="btnFecharModal">Cancelar</button>
-            <button type="submit" class="primary">Salvar agendamento</button>
+            <button type="button" id="btnCancelar">Fechar</button>
+            <button type="submit" class="primary">Salvar</button>
         </div>
     </form>
 </dialog>
 
-<script src="js/painel.js?v=2"></script>
+<div id="toast" class="toast" hidden></div>
+
+<script src="js/painel.js?v=4"></script>
 </body>
 </html>

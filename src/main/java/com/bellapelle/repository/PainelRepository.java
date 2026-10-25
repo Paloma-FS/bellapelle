@@ -102,10 +102,7 @@ public class PainelRepository {
                 LEFT JOIN equipamento e
                     ON e.id_equipamento = a.id_equipamento
                 WHERE a.data_hora < :fim
-                  AND DATE_ADD(
-                      a.data_hora,
-                      INTERVAL a.duracao_minutos MINUTE
-                  ) > :inicio
+                  AND DATEADD('MINUTE', a.duracao_minutos, a.data_hora) > :inicio
                   AND a.status IN ('Agendado', 'Confirmado', 'Realizado')
                 ORDER BY a.data_hora, a.id_agendamento
                 """)

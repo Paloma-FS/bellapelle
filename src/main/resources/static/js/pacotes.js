@@ -2,11 +2,10 @@ const API = "/api/pacotes";
 const $ = (id) => document.getElementById(id);
 const modal = $("modal");
 let itensAtuais = {};
-let idsListados = [];
 
 function esc(t) {
     return String(t ?? "").replace(/[&<>"']/g, (c) => ({
-        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+        "&": "&amp;", "<​": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
     }[c]));
 }
 
@@ -45,7 +44,7 @@ function linha(p) {
     const resumo = itens.length
         ? itens.map(i => `<div>${esc(i.nomeProcedimento)} (${i.numeroSessoes}x)</div>`).join("")
           + `<div><small>Total: ${total} sessões</small></div>`
-        : "-";;
+        : "-";
     return `<tr>
         <td>${esc(p.nome)}</td><td>${esc(p.descricao || "-")}</td><td>${resumo}</td>
         <td>${moeda(p.valorTotal)}</td><td>${p.validadeDias} dias</td>
@@ -58,7 +57,6 @@ async function montarLista(idPacote) {
     const itens = idPacote ? await lista(`${API}/${idPacote}/itens`) : [];
     itensAtuais = {};
     itens.forEach(i => { itensAtuais[i.idProcedimento] = i; });
-    idsListados = procs.map(p => p.id);
     $("listaProcs").innerHTML = procs.map(p => {
         const item = itensAtuais[p.id];
         return `<div class="proc-linha">
@@ -82,36 +80,9 @@ $("listaProcs").addEventListener("change", (e) => {
 function selecionados() {
     return [...document.querySelectorAll(".chkProc:checked")].map(c => ({
         idProcedimento: Number(c.value),
-        numeroSessoes: Number(document.querySelector(`.qtdProc[data-id="${c.value}"]`).value)
+        numeroSessoes: Number(document.querySelector(`.qtdProc[data-id="${c.value}"]`).value),
+        periodicidadeDias: itensAtuais[c.value]?.periodicidadeDias ?? null
     }));
-}
-
-async function sincronizarItens(idPacote, marcados) {
-    const marcadosIds = marcados.map(m => m.idProcedimento);
-    for (const idProc of idsListados) {
-        const atual = itensAtuais[idProc];
-        if (atual && !marcadosIds.includes(idProc)) {
-            const r = await fetch(`${API}/${idPacote}/itens/${atual.id}`, { method: "DELETE" });
-            if (!r.ok) throw new Error("Erro ao remover procedimento do pacote.");
-        }
-    }
-    for (const m of marcados) {
-        const atual = itensAtuais[m.idProcedimento];
-        if (atual && atual.numeroSessoes === m.numeroSessoes) continue;
-        const r = await fetch(atual ? `${API}/${idPacote}/itens/${atual.id}` : `${API}/${idPacote}/itens`, {
-            method: atual ? "PUT" : "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                idProcedimento: m.idProcedimento,
-                numeroSessoes: m.numeroSessoes,
-                periodicidadeDias: atual ? atual.periodicidadeDias : null
-            })
-        });
-        if (!r.ok) {
-            const e = await r.json().catch(() => ({}));
-            throw new Error(e.mensagem || "Erro ao salvar procedimento do pacote.");
-        }
-    }
 }
 
 async function abrirNovo() {
@@ -156,30 +127,25 @@ $("form").addEventListener("submit", async (e) => {
         nome: $("nome").value.trim(),
         descricao: $("descricao").value.trim() || null,
         valorTotal: Number($("valorTotal").value),
-        validadeDias: Number($("validadeDias").value)
+        validadeDias: Number($("validadeDias").value),
+        itens: marcados
     };
     const id = $("id").value;
-    const resp = await fetch(id ? `${API}/${id}` : API, {
-        method: id ? "PUT" : "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(dados)
-    });
-    if (!resp.ok) {
-        const erro = await resp.json().catch(() => ({}));
-        $("erro").textContent = erro.mensagem || "Erro ao salvar.";
-        return;
-    }
-    const salvo = await resp.json();
     try {
-        await sincronizarItens(salvo.id, marcados);
+        const resp = await fetch(id ? `${API}/${id}` : API, {
+            method: id ? "PUT" : "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(dados)
+        });
+        if (!resp.ok) {
+            const erro = await resp.json().catch(() => ({}));
+            throw new Error(erro.mensagem || "Erro ao salvar.");
+        }
         modal.close();
+        carregar();
     } catch (err) {
-        $("id").value = salvo.id;
-        $("tituloForm").textContent = "Editar pacote";
-        await montarLista(salvo.id);
         $("erro").textContent = err.message;
     }
-    carregar();
 });
 
 $("btnNovo").addEventListener("click", abrirNovo);

@@ -84,4 +84,4 @@ if (-not $env:DB_PASSWORD) {
 }
 
 Set-Location $PSScriptRoot
-& $mvn clean spring-boot:run
+ & $mvn clean spring-boot:run

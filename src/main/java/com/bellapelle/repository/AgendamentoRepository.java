@@ -196,10 +196,7 @@ Optional<Agendamento> findById(Long id);
               )
               AND (:ignorarId IS NULL OR a.id_agendamento <> :ignorarId)
               AND a.data_hora < :fim
-              AND DATE_ADD(
-                  a.data_hora,
-                  INTERVAL a.duracao_minutos MINUTE
-              ) > :inicio
+              AND DATEADD('MINUTE', a.duracao_minutos, a.data_hora) > :inicio
             """, nativeQuery = true)
     long conflitosSala(
             @Param("idSala") Long idSala,
@@ -219,10 +216,7 @@ Optional<Agendamento> findById(Long id);
               )
               AND (:ignorarId IS NULL OR a.id_agendamento <> :ignorarId)
               AND a.data_hora < :fim
-              AND DATE_ADD(
-                  a.data_hora,
-                  INTERVAL a.duracao_minutos MINUTE
-              ) > :inicio
+              AND DATEADD('MINUTE', a.duracao_minutos, a.data_hora) > :inicio
             """, nativeQuery = true)
     long conflitosProfissional(
             @Param("idProfissional") Long idProfissional,
@@ -242,10 +236,7 @@ Optional<Agendamento> findById(Long id);
               )
               AND (:ignorarId IS NULL OR a.id_agendamento <> :ignorarId)
               AND a.data_hora < :fim
-              AND DATE_ADD(
-                  a.data_hora,
-                  INTERVAL a.duracao_minutos MINUTE
-              ) > :inicio
+              AND DATEADD('MINUTE', a.duracao_minutos, a.data_hora) > :inicio
             """, nativeQuery = true)
     long conflitosEquipamento(
             @Param("idEquipamento") Long idEquipamento,
@@ -263,10 +254,7 @@ Optional<Agendamento> findById(Long id);
                   :#{T(com.bellapelle.model.StatusAgendamento).Realizado.name()}
               )
               AND a.data_hora < :fim
-              AND DATE_ADD(
-                  a.data_hora,
-                  INTERVAL a.duracao_minutos MINUTE
-              ) > :inicio
+              AND DATEADD('MINUTE', a.duracao_minutos, a.data_hora) > :inicio
             ORDER BY a.data_hora, a.id_agendamento
             """, nativeQuery = true)
     List<Agendamento> findAtivosNoPeriodo(

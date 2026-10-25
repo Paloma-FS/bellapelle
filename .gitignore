@@ -8,3 +8,4 @@ target/
 bin/
 *.zip
 log.txt
+data/

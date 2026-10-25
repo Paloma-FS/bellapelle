@@ -1458,3 +1458,507 @@ table td.acoes {
 .card {
     overflow-x: auto;
 }
+/* ===== Estilos exclusivos do painel diário ===== */
+
+.painel {
+    display: grid;
+    gap: 18px;
+}
+
+.painel-topo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.painel-topo h2 {
+    margin: 0;
+}
+
+.kpis {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(150px, 1fr));
+    gap: 12px;
+}
+
+.kpi {
+    padding: 16px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .08);
+}
+
+.kpi small {
+    display: block;
+    color: #64748b;
+}
+
+.kpi strong {
+    display: block;
+    margin-top: 6px;
+    font-size: 1.7rem;
+    color: #8a2d4d;
+}
+
+.painel-colunas {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(280px, 1fr);
+    gap: 18px;
+    align-items: start;
+}
+
+.painel-secao h2 {
+    margin-top: 0;
+}
+
+.agenda-lista,
+.alertas-lista {
+    display: grid;
+    gap: 10px;
+}
+
+.agenda-item {
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    gap: 12px;
+    padding: 12px;
+    border: 1px solid #eadde0;
+    border-left: 5px solid #b5707a;
+    border-radius: 8px;
+    background: #fff;
+}
+
+.agenda-hora {
+    font-weight: 700;
+    color: #8a2d4d;
+}
+
+.agenda-item p {
+    margin: 4px 0;
+}
+
+.agenda-item small {
+    color: #64748b;
+}
+
+.agenda-item.andamento {
+    border-left-color: #247342;
+    background: #f2faf4;
+}
+
+.alerta {
+    padding: 12px;
+    border-radius: 8px;
+    border-left: 5px solid #d59c2c;
+    background: #fffaf0;
+}
+
+.alerta.vermelho {
+    border-left-color: #b3261e;
+    background: #fff5f4;
+}
+
+.alerta strong {
+    display: block;
+    margin-bottom: 4px;
+}
+
+.vazio {
+    padding: 12px;
+    color: #64748b;
+}
+
+.erro-painel {
+    padding: 12px;
+    color: #b3261e;
+}
+
+/* ---- busca de paciente (igual ao agendamentos.html) ---- */
+.busca-paciente {
+    position: relative;
+}
+
+.lista-pacientes[hidden],
+#infoSaldo[hidden],
+#pacienteAviso[hidden] {
+    display: none !important;
+}
+
+.lista-pacientes {
+    position: absolute;
+    top: calc(100% + 2px);
+    left: 0;
+    right: 0;
+    z-index: 30;
+    max-height: 240px;
+    overflow-y: auto;
+    background: #fff;
+    border: 1px solid #d8c9c9;
+    border-radius: 6px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, .12);
+}
+
+.pac-opcao {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 9px 12px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+}
+
+.pac-opcao:last-child {
+    border-bottom: none;
+}
+
+.pac-opcao:hover {
+    background: #faf5f3;
+}
+
+.pac-opcao small,
+.pac-vazio {
+    color: #746767;
+}
+
+.pac-vazio {
+    padding: 10px 12px;
+}
+
+.pac-aviso {
+    display: block;
+    margin-top: 4px;
+    color: #c0392b;
+}
+
+.pac-busca-invalida {
+    border-color: #c0392b !important;
+}
+
+/* ---- saldo de sessões (igual ao agendamentos.html) ---- */
+.saldo-info {
+    display: grid;
+    gap: 8px;
+    margin: 10px 0 14px;
+    padding: 12px;
+    background: #f8f5f2;
+    border: 1px solid #e6dcd3;
+    border-radius: 8px;
+}
+
+.saldo-titulo {
+    margin-bottom: 2px;
+    font-weight: 600;
+}
+
+.saldo-tabela {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .92em;
+}
+
+.saldo-tabela th,
+.saldo-tabela td {
+    text-align: left;
+    padding: 6px 8px;
+    border-bottom: 1px solid #eee;
+}
+
+.saldo-tabela tr.saldo-sel {
+    background: #f3e3e5;
+}
+
+.saldo-vazio,
+.saldo-erro {
+    font-size: .92em;
+}
+
+.saldo-vazio {
+    color: #746767;
+}
+
+.saldo-erro {
+    color: #c0392b;
+}
+
+#modal {
+    width: min(760px, 95vw);
+}
+
+@media (max-width: 850px) {
+    .kpis {
+        grid-template-columns: repeat(2, minmax(130px, 1fr));
+    }
+
+    .painel-colunas {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 520px) {
+    .kpis {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    .kpi {
+        padding: 12px;
+    }
+
+    .kpi strong {
+        font-size: 1.4rem;
+    }
+}
+/* ===== Estilos exclusivos do painel diário ===== */
+
+.painel {
+    display: grid;
+    gap: 18px;
+}
+
+.painel-topo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.painel-topo h2 {
+    margin: 0;
+}
+
+.kpis {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(150px, 1fr));
+    gap: 12px;
+}
+
+.kpi {
+    padding: 16px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .08);
+}
+
+.kpi small {
+    display: block;
+    color: #64748b;
+}
+
+.kpi strong {
+    display: block;
+    margin-top: 6px;
+    font-size: 1.7rem;
+    color: #8a2d4d;
+}
+
+.painel-colunas {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(280px, 1fr);
+    gap: 18px;
+    align-items: start;
+}
+
+.painel-secao h2 {
+    margin-top: 0;
+}
+
+.agenda-lista,
+.alertas-lista {
+    display: grid;
+    gap: 10px;
+}
+
+.agenda-item {
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    gap: 12px;
+    padding: 12px;
+    border: 1px solid #eadde0;
+    border-left: 5px solid #b5707a;
+    border-radius: 8px;
+    background: #fff;
+}
+
+.agenda-hora {
+    font-weight: 700;
+    color: #8a2d4d;
+}
+
+.agenda-item p {
+    margin: 4px 0;
+}
+
+.agenda-item small {
+    color: #64748b;
+}
+
+.agenda-item.andamento {
+    border-left-color: #247342;
+    background: #f2faf4;
+}
+
+.alerta {
+    padding: 12px;
+    border-radius: 8px;
+    border-left: 5px solid #d59c2c;
+    background: #fffaf0;
+}
+
+.alerta.vermelho {
+    border-left-color: #b3261e;
+    background: #fff5f4;
+}
+
+.alerta strong {
+    display: block;
+    margin-bottom: 4px;
+}
+
+.vazio {
+    padding: 12px;
+    color: #64748b;
+}
+
+.erro-painel {
+    padding: 12px;
+    color: #b3261e;
+}
+
+/* ---- busca de paciente (igual ao agendamentos.html) ---- */
+.busca-paciente {
+    position: relative;
+}
+
+.lista-pacientes[hidden],
+#infoSaldo[hidden],
+#pacienteAviso[hidden] {
+    display: none !important;
+}
+
+.lista-pacientes {
+    position: absolute;
+    top: calc(100% + 2px);
+    left: 0;
+    right: 0;
+    z-index: 30;
+    max-height: 240px;
+    overflow-y: auto;
+    background: #fff;
+    border: 1px solid #d8c9c9;
+    border-radius: 6px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, .12);
+}
+
+.pac-opcao {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 9px 12px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+}
+
+.pac-opcao:last-child {
+    border-bottom: none;
+}
+
+.pac-opcao:hover {
+    background: #faf5f3;
+}
+
+.pac-opcao small,
+.pac-vazio {
+    color: #746767;
+}
+
+.pac-vazio {
+    padding: 10px 12px;
+}
+
+.pac-aviso {
+    display: block;
+    margin-top: 4px;
+    color: #c0392b;
+}
+
+.pac-busca-invalida {
+    border-color: #c0392b !important;
+}
+
+/* ---- saldo de sessões (igual ao agendamentos.html) ---- */
+.saldo-info {
+    display: grid;
+    gap: 8px;
+    margin: 10px 0 14px;
+    padding: 12px;
+    background: #f8f5f2;
+    border: 1px solid #e6dcd3;
+    border-radius: 8px;
+}
+
+.saldo-titulo {
+    margin-bottom: 2px;
+    font-weight: 600;
+}
+
+.saldo-tabela {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .92em;
+}
+
+.saldo-tabela th,
+.saldo-tabela td {
+    text-align: left;
+    padding: 6px 8px;
+    border-bottom: 1px solid #eee;
+}
+
+.saldo-tabela tr.saldo-sel {
+    background: #f3e3e5;
+}
+
+.saldo-vazio,
+.saldo-erro {
+    font-size: .92em;
+}
+
+.saldo-vazio {
+    color: #746767;
+}
+
+.saldo-erro {
+    color: #c0392b;
+}
+
+#modal {
+    width: min(760px, 95vw);
+}
+
+@media (max-width: 850px) {
+    .kpis {
+        grid-template-columns: repeat(2, minmax(130px, 1fr));
+    }
+
+    .painel-colunas {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 520px) {
+    .kpis {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    .kpi {
+        padding: 12px;
+    }
+
+    .kpi strong {
+        font-size: 1.4rem;
+    }
+}
