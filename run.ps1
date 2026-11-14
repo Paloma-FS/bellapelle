@@ -72,16 +72,6 @@ $env:JAVA_HOME = $jdk
 $env:Path = (Join-Path $jdk "bin") + ";" + $env:Path
 Write-Host "Usando JDK 21 em: $jdk"
 
-# ---------- Banco de dados ----------
-if (-not $env:DB_PASSWORD) {
-    $seguro = Read-Host "Senha do MySQL (usuario $(if ($env:DB_USER) { $env:DB_USER } else { 'root' }))" -AsSecureString
-    $ptr = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($seguro)
-    try {
-        $env:DB_PASSWORD = [Runtime.InteropServices.Marshal]::PtrToStringBSTR($ptr)
-    } finally {
-        [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($ptr)
-    }
-}
-
+# ---------- Executar ----------
 Set-Location $PSScriptRoot
- & $mvn clean spring-boot:run
+& $mvn clean spring-boot:run

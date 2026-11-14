@@ -2,6 +2,8 @@ const API = "/api/pacotes";
 const $ = (id) => document.getElementById(id);
 const modal = $("modal");
 let itensAtuais = {};
+let valoresProc = {};
+let procs = [];
 
 function esc(t) {
     return String(t ?? "").replace(/[&<>"']/g, (c) => ({
@@ -53,10 +55,12 @@ function linha(p) {
 }
 
 async function montarLista(idPacote) {
-    const procs = await lista("/api/procedimentos?status=Ativo");
+    procs = await lista("/api/procedimentos?status=Ativo");
     const itens = idPacote ? await lista(`${API}/${idPacote}/itens`) : [];
     itensAtuais = {};
+    valoresProc = {};
     itens.forEach(i => { itensAtuais[i.idProcedimento] = i; });
+    procs.forEach(p => { valoresProc[p.id] = Number(p.valor) || 0; });
     $("listaProcs").innerHTML = procs.map(p => {
         const item = itensAtuais[p.id];
         return `<div class="proc-linha">
@@ -68,13 +72,51 @@ async function montarLista(idPacote) {
             </span>
         </div>`;
     }).join("") || "Nenhum procedimento ativo cadastrado.";
+    atualizarResumoPreco();
 }
+
+/* Preço real = soma de (valor do procedimento × nº de sessões) dos itens marcados. */
+function precoReal() {
+    return [...document.querySelectorAll(".chkProc:checked")].reduce((soma, c) => {
+        const qtd = Number(document.querySelector(`.qtdProc[data-id="${c.value}"]`).value) || 0;
+        return soma + (valoresProc[c.value] || 0) * Math.max(qtd, 0);
+    }, 0);
+}
+
+function atualizarResumoPreco() {
+    const real = precoReal();
+    const informado = Number($("valorTotal").value) || 0;
+    $("precoReal").textContent = moeda(real);
+    $("precoInformado").textContent = moeda(informado);
+
+    const desc = $("precoDesconto");
+    if (real <= 0 || !$("valorTotal").value) {
+        desc.textContent = "—";
+        desc.className = "";
+    } else if (informado <= real) {
+        const valor = real - informado;
+        const pct = (valor / real) * 100;
+        desc.textContent = `${moeda(valor)} (${pct.toFixed(1).replace(".", ",")}%)`;
+        desc.className = valor > 0 ? "desc-ok" : "";
+    } else {
+        desc.textContent = `Valor acima do preço real em ${moeda(informado - real)}`;
+        desc.className = "desc-alerta";
+    }
+}
+
+$("listaProcs").addEventListener("input", atualizarResumoPreco);
+$("valorTotal").addEventListener("input", atualizarResumoPreco);
+$("btnUsarReal").addEventListener("click", () => {
+    $("valorTotal").value = precoReal().toFixed(2);
+    atualizarResumoPreco();
+});
 
 $("listaProcs").addEventListener("change", (e) => {
     if (!e.target.classList.contains("chkProc")) return;
     const qtd = document.querySelector(`.qtdProc[data-id="${e.target.value}"]`);
     qtd.disabled = !e.target.checked;
     if (e.target.checked && !qtd.value) qtd.value = 1;
+    atualizarResumoPreco();
 });
 
 function selecionados() {

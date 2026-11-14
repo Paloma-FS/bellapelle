@@ -57,18 +57,22 @@ INSERT INTO `profissional` VALUES (1,'Camila Rocha','111.222.333-44','1982-05-10
 
 DROP TABLE IF EXISTS `sala`;
 CREATE TABLE `sala` (
+  CREATE TABLE `sala` (
   `id_sala` int NOT NULL AUTO_INCREMENT,
+  `numero` int NOT NULL,
   `nome` varchar(50) NOT NULL,
   `descricao` varchar(255) DEFAULT NULL,
   `status` varchar(50) NOT NULL DEFAULT 'Ativa',
-  PRIMARY KEY (`id_sala`)
+  PRIMARY KEY (`id_sala`),
+  CONSTRAINT `uk_sala_numero` UNIQUE (`numero`)
 );
 
---
--- Dumping data for table `sala`
---
+INSERT INTO `sala` (`id_sala`,`numero`,`nome`,`descricao`,`status`)
+ VALUES (1,1,'Sala 1','Sala liberada para todos os procedimentos','Ativa'),
+ (2,2,'Sala 2','Sala liberada para todos os procedimentos','Ativa'),
+ (3,3,'Sala 3','Sala liberada para todos os procedimentos','Ativa'),
+ (4,4,'Sala 4','em construção','Em manutenção');
 
-INSERT INTO `sala` VALUES (1,'Sala 1','Sala liberada para todos os procedimentos','Ativa'),(2,'Sala 2','Sala liberada para todos os procedimentos','Ativa'),(3,'Sala 3','Sala liberada para todos os procedimentos','Ativa'),(4,'Sala 4','em construção','Em manutenção');
 
 
 -- Dump completed on 2026-10-25 15:08:32

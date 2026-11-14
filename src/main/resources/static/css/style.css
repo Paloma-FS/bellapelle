@@ -1962,3 +1962,30 @@ table td.acoes {
         font-size: 1.4rem;
     }
 }
+
+/* ============ PACIENTES: botões Editar / Prontuário em destaque ============ */
+table td button.btn-editar {
+    background: #2f5d50;
+    border: 1px solid #2f5d50;
+    color: #fff;
+    font-weight: 600;
+    box-shadow: 0 1px 3px rgba(47, 93, 80, .35);
+}
+
+table td button.btn-editar:hover {
+    background: #244a40;
+    border-color: #244a40;
+}
+
+table td button.btn-prontuario {
+    background: #b5707a;
+    border: 1px solid #b5707a;
+    color: #fff;
+    font-weight: 600;
+    box-shadow: 0 1px 3px rgba(181, 112, 122, .4);
+}
+
+table td button.btn-prontuario:hover {
+    background: #9a5a64;
+    border-color: #9a5a64;
+}

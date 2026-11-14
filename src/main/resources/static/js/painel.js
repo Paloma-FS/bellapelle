@@ -238,8 +238,87 @@ async function carregarOpcoes() {
         "(nenhum)"
     );
 
-    preencher("idProcedimento", procedimentos);
+    if ($("id").value) {
+        // Edição: mantém a lista completa, como antes.
+        preencher("idProcedimento", procedimentos);
+    } else {
+        // Novo agendamento: só o que a paciente já comprou e ainda pode agendar.
+        await preencherProcedimentosPaciente();
+    }
 }
+
+/* ---- procedimentos que a paciente já comprou e ainda pode agendar ---- */
+let tokenProcsPaciente = 0;
+
+async function preencherProcedimentosPaciente() {
+    const seletor = $("idProcedimento");
+    const idPaciente = $("idPaciente").value;
+    const meuToken = ++tokenProcsPaciente;
+
+    if (!idPaciente) {
+        seletor.innerHTML = `<option value="">Selecione a paciente primeiro</option>`;
+        return;
+    }
+
+    seletor.innerHTML = `<option value="">Consultando sessões…</option>`;
+
+    try {
+        const [saldos, agendados, confirmados] = await Promise.all([
+            lista(`/api/saldos?idPaciente=${encodeURIComponent(idPaciente)}`),
+            lista(`${API}?status=Agendado`),
+            lista(`${API}?status=Confirmado`)
+        ]);
+
+        // Ignora resposta antiga se a paciente mudou enquanto consultava.
+        if (meuToken !== tokenProcsPaciente) return;
+        if ($("idPaciente").value !== idPaciente) return;
+
+        // Sessões compradas e ainda não utilizadas, por procedimento.
+        const disponiveis = new Map();
+        saldos.forEach((s) => {
+            const chave = String(s.idProcedimento);
+            disponiveis.set(chave, (disponiveis.get(chave) || 0) + Number(s.quantidadeDisponivel || 0));
+        });
+
+        // Sessões já reservadas em agendamentos abertos (ainda não realizados).
+        const reservadas = new Map();
+        [...agendados, ...confirmados]
+            .filter((a) => String(a.idPaciente) === String(idPaciente))
+            .forEach((a) => {
+                const chave = String(a.idProcedimento);
+                reservadas.set(chave, (reservadas.get(chave) || 0) + 1);
+            });
+
+        const opcoes = procs
+            .map((p) => ({
+                p,
+                livres: (disponiveis.get(String(p.id)) || 0) - (reservadas.get(String(p.id)) || 0)
+            }))
+            .filter((x) => x.livres > 0);
+
+        if (!opcoes.length) {
+            seletor.innerHTML = `<option value="">Paciente sem sessões disponíveis para agendar</option>`;
+        } else {
+            seletor.innerHTML = opcoes.map((x) => `
+                <option value="${esc(x.p.id)}">
+                    ${esc(x.p.nome)} (${x.livres} ${x.livres === 1 ? "sessão" : "sessões"})
+                </option>
+            `).join("");
+        }
+
+        // Atualiza duração, saldo e horários com o procedimento agora selecionado.
+        seletor.dispatchEvent(new Event("change"));
+    } catch (e) {
+        if (meuToken !== tokenProcsPaciente) return;
+        seletor.innerHTML = `<option value="">Não foi possível consultar as sessões</option>`;
+        toast("Não foi possível consultar os procedimentos da paciente: " + e.message, "erro");
+    }
+}
+
+// Só no NOVO agendamento (na edição o formulário continua como antes).
+$("idPaciente").addEventListener("change", () => {
+    if (!$("id").value) preencherProcedimentosPaciente();
+});
 
 /* ---- saldo de sessões da paciente selecionada ---- */
 async function carregarSaldo() {

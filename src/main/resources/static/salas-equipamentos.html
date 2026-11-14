@@ -38,7 +38,7 @@
     <!-- SEÇÃO SALAS -->
     <section id="tabSalas" class="card secao-tab ativa">
         <div class="toolbar">
-            <input type="text" id="buscaSala" placeholder="Buscar sala por nome">
+            <input type="text" id="buscaSala" placeholder="Buscar sala por número ou nome">
             <select id="filtroStatusSala">
                 <option value="">Todos os status</option>
                 <option value="Ativa" selected>Ativas</option>
@@ -50,6 +50,7 @@
         <table>
             <thead>
                 <tr>
+                    <th>Nº</th>
                     <th>Nome</th>
                     <th>Descrição</th>
                     <th>Status</th>
@@ -94,7 +95,8 @@
             <h2 id="tituloModalSala">Nova Sala</h2>
             <input type="hidden" id="salaId">
             <div class="grid">
-                <label>Nome da Sala *<input id="salaNome" required maxlength="50"></label>
+                <label>Número da Sala *<input id="salaNumero" type="number" min="1" max="9999" step="1" required placeholder="Ex.: 3"></label>
+                <label>Nome da Sala (opcional)<input id="salaNome" maxlength="50" placeholder="Se vazio, será &quot;Sala &lt;número&gt;&quot;"></label>
                 <label>Status *
                     <select id="salaStatus">
                         <option value="Ativa">Ativa</option>
@@ -147,6 +149,6 @@
     </dialog>
 </main>
 
-<script src="js/salas-equipamentos.js"></script>
+<script src="js/salas-equipamentos.js?v=2"></script>
 </body>
 </html>

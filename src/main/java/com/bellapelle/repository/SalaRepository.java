@@ -12,8 +12,14 @@ public interface SalaRepository extends JpaRepository<Sala, Long> {
     @Query("""
             select s from Sala s
             where (:status is null or s.status = :status)
-              and (:busca is null or lower(s.nome) like lower(concat('%', :busca, '%')))
-            order by s.nome
+              and (:busca is null
+                   or lower(s.nome) like lower(concat('%', :busca, '%'))
+                   or cast(s.numero as string) like concat('%', :busca, '%'))
+            order by s.numero
             """)
     List<Sala> pesquisar(@Param("busca") String busca, @Param("status") String status);
+
+    boolean existsByNumero(Integer numero);
+
+    boolean existsByNumeroAndIdNot(Integer numero, Long id);
 }

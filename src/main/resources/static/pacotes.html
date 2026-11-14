@@ -22,6 +22,12 @@
     #listaProcs .proc-qtd { display: flex; align-items: center; gap: 6px; white-space: nowrap; }
     #listaProcs input.qtdProc { width: 70px; margin: 0; }
     #listaProcs input.qtdProc:disabled { background: #f1f5f9; opacity: .6; }
+    #resumoPreco { margin-top: 12px; padding: 12px 14px; border-radius: 8px; background: #f4ece9; border: 1px solid #e4d2cd; display: grid; gap: 4px; font-size: .95em; }
+    #resumoPreco .linha { display: flex; justify-content: space-between; gap: 12px; }
+    #resumoPreco .real strong { font-size: 1.15em; color: #2f5d50; }
+    #resumoPreco .desc-ok { color: #1e7a3c; }
+    #resumoPreco .desc-alerta { color: #c0392b; }
+    #resumoPreco button { margin-top: 6px; justify-self: start; }
     </style>
 </head>
 <body>
@@ -79,6 +85,13 @@
             <h3 style="margin-top:12px;">Procedimentos do pacote</h3>
             <p style="font-size:.9em;">Marque os procedimentos e informe a quantidade de sessões de cada um.</p>
             <div id="listaProcs"></div>
+
+            <div id="resumoPreco">
+                <div class="linha real"><span>Preço real do pacote (soma dos procedimentos × sessões)</span><strong id="precoReal">R$ 0,00</strong></div>
+                <div class="linha"><span>Valor do pacote informado</span><span id="precoInformado">R$ 0,00</span></div>
+                <div class="linha"><span>Desconto aplicado</span><span id="precoDesconto">—</span></div>
+                <button type="button" id="btnUsarReal">Usar preço real como valor do pacote</button>
+            </div>
             <p id="erro" class="erro"></p>
 
             <div class="acoes">
@@ -88,6 +101,6 @@
         </form>
     </dialog>
 </main>
-<script src="js/pacotes.js?v=5"></script>
+<script src="js/pacotes.js?v=6"></script>
 </body>
 </html>

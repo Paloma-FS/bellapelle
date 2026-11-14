@@ -20,6 +20,9 @@ public class Sala {
     @Column(nullable = false, length = 50)
     private String nome;
 
+     @Column(nullable = false, unique = true)
+    private Integer numero;
+
     @Column(length = 255)
     private String descricao;
 

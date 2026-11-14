@@ -167,13 +167,13 @@ async function carregarSalas() {
 
         $("tabelaSalas").innerHTML =
             salas.map(linhaSala).join("") ||
-            `<tr><td colspan="4">Nenhuma sala encontrada.</td></tr>`;
+            `<tr><td colspan="5">Nenhuma sala encontrada.</td></tr>`;
     } catch (erro) {
         if (minhaVersao !== versaoPesquisaSalas) return;
 
         $("tabelaSalas").innerHTML = `
             <tr>
-                <td colspan="4">
+                <td colspan="5">
                     Não foi possível carregar as salas:
                     ${esc(mensagemErro(erro))}
                 </td>
@@ -194,7 +194,8 @@ function linhaSala(sala) {
 
     return `
         <tr>
-            <td><strong>${esc(sala.nome)}</strong></td>
+            <td><strong>${esc(sala.numero)}</strong></td>
+            <td>${esc(sala.nome)}</td>
             <td>${esc(sala.descricao || "-")}</td>
             <td>
                 <span class="badge ${esc(sala.status)}">
@@ -231,6 +232,7 @@ async function editarSala(id) {
 
         $("formSala").reset();
         $("salaId").value = sala.id;
+        $("salaNumero").value = sala.numero ?? "";
         $("salaNome").value = sala.nome;
         $("salaDescricao").value = sala.descricao || "";
         $("salaStatus").value = sala.status;
@@ -274,7 +276,8 @@ $("formSala").addEventListener("submit", async (evento) => {
     const id = $("salaId").value;
 
     const payload = {
-        nome: $("salaNome").value.trim(),
+        numero: $("salaNumero").value ? Number($("salaNumero").value) : null,
+        nome: $("salaNome").value.trim() || null,
         descricao: $("salaDescricao").value.trim() || null,
         status: $("salaStatus").value
     };

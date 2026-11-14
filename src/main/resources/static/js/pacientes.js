@@ -110,9 +110,9 @@ function linha(paciente) {
         <td>${esc(paciente.preferenciaBebida)}</td>
         <td>${esc(ROTULO_PREF[paciente.preferenciaProfissional] ?? paciente.preferenciaProfissional)}</td>
         <td><span class="badge ${esc(paciente.status)}">${esc(paciente.status)}</span></td>
-        <td>
-            <button onclick="editar(${paciente.id})">Editar</button>
-            <button onclick="verProntuario(${paciente.id})">Prontuário</button>
+                <td>
+            <button class="btn-editar" onclick="editar(${paciente.id})">Editar</button>
+            <button class="btn-prontuario" onclick="verProntuario(${paciente.id})">Prontuário</button>
             ${acaoStatus}
         </td>
     </tr>`;

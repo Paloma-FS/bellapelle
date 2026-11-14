@@ -38,6 +38,7 @@ public class SalaService {
 
     @Transactional
     public SalaResponse criar(SalaRequest req) {
+        validarNumeroUnico(req.numero(), null);
         Sala sala = new Sala();
         preencher(sala, req);
         return SalaResponse.de(repository.save(sala));
@@ -46,6 +47,7 @@ public class SalaService {
     @Transactional
     public SalaResponse atualizar(Long id, SalaRequest req) {
         Sala sala = obter(id);
+        validarNumeroUnico(req.numero(), id);
         preencher(sala, req);
         return SalaResponse.de(repository.save(sala));
     }
@@ -58,11 +60,23 @@ public class SalaService {
     }
 
     private void preencher(Sala sala, SalaRequest req) {
-        sala.setNome(req.nome().trim());
+        sala.setNumero(req.numero());
+        sala.setNome(vazio(req.nome()) ? "Sala " + req.numero() : req.nome().trim());
         sala.setDescricao(vazio(req.descricao()) ? null : req.descricao().trim());
 
         String status = vazio(req.status()) ? sala.getStatus() : req.status().trim();
         sala.setStatus(validarStatus(status));
+    }
+
+    /** Não permite duas salas com o mesmo número de identificação. */
+    private void validarNumeroUnico(Integer numero, Long idAtual) {
+        boolean duplicada = idAtual == null
+                ? repository.existsByNumero(numero)
+                : repository.existsByNumeroAndIdNot(numero, idAtual);
+
+        if (duplicada) {
+            throw new RegraNegocioException("Já existe a sala número " + numero + ". Informe outro número.");
+        }
     }
 
     private Sala obter(Long id) {
